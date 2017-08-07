@@ -3,6 +3,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule} from '@angular/http';
 import { RouterModule, Routes} from '@angular/router';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { environment } from '../environments/environment';
+import { FirebaseService } from './services/firebase.service';
+import { FlashMessagesModule } from 'angular2-flash-messages';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -15,7 +21,8 @@ import { EditListingComponent } from './components/edit-listing/edit-listing.com
 const myAppRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'annonser', component: ListingsComponent},
-  {path: 'skapa-annons', component: AddListingComponent}
+  {path: 'skapa-annons', component: AddListingComponent},
+  {path: 'listing/:id', component: ListingComponent}
 ];
 
 @NgModule({
@@ -32,9 +39,14 @@ const myAppRoutes: Routes = [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(myAppRoutes)
+    RouterModule.forRoot(myAppRoutes),
+    AngularFireModule.initializeApp(environment.firebase),
+    FlashMessagesModule
   ],
-  providers: [],
+  providers: [
+    FirebaseService,
+    AngularFireAuth,
+    AngularFireDatabase],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
